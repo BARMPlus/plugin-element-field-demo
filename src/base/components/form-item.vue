@@ -39,7 +39,8 @@
         //this.$parent.$parent.$parent为 form-container
       },
       boxWidth(){
-        return `width:${+this.width * 10}%`;
+          let width=+this.width;
+        return `width:${(width-0.1)* 10}%`;
       }
     }
 

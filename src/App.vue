@@ -5,8 +5,7 @@
       <span @click="readonlyClick">切换</span>
       <form-container :model="form" :rules="rules" :_readonly="readonly">
         <field-input label="名称" v-model="form.name"
-                     prop="name" placeholder="请输入名称"
-        ></field-input>
+                     prop="name" placeholder="请输入名称"></field-input>
         <field-input label="年龄"></field-input>
         <br/>
         <field-input label="密码" v-model="form.password1"></field-input>
@@ -16,6 +15,7 @@
         <field-checkbox label="选择" v-model="form.checkbox"
                         :list="arr" width="5" min="0" max="2"
         ></field-checkbox>
+        <br>
         <field-input label="信息" v-model="form.info"
                      width="5" prop="info" type="textarea" resize="none"
                      rows="3"
