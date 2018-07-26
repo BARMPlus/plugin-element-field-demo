@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="model" :rules="rules" :show-message="showMessage">
+  <el-form :model="model" :rules="rules" :show-message="showMessage" >
     <slot></slot>
   </el-form>
 </template>
