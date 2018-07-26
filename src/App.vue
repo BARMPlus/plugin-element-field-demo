@@ -29,18 +29,17 @@
         ></field-select>
         <field-date-picker v-model="form.time" label="日期选择器" placeholder="请输入日期"
         ></field-date-picker>
+        <field-img label="图片" width="4" :max="2" @imgList="getList" :fileList="fileList" :sts="sts"></field-img>
       </form-container>
     </el-card>
-
   </div>
 </template>
 
 <script>
 
-
   export default {
     name: 'App',
-    data(){
+    data() {
       let validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
@@ -51,7 +50,15 @@
         }
       };
       return {
-
+        //文件格式{name,URL}
+        fileList: [
+          {
+            name: "d7_FCKCVHbKhiHBnjfGW00",
+            url: "http://mlshopimage.oss-cn-shanghai.aliyuncs.com/d7_FCKCVHbKhiHBnjfGW00"
+          }
+        ],
+        //服务器sts验证
+        sts: 'http://115.159.154.194:8080/sts',
         readonly: false,
         form: {
           checkbox: [],
@@ -89,11 +96,14 @@
     },
 
     methods: {
-      readonlyClick(){
+      readonlyClick() {
         this.readonly = !this.readonly;
       },
-      show(){
+      show() {
         console.log(this.form)
+      },
+      getList(data) {
+        console.log(data)
       }
     }
   }
@@ -107,7 +117,7 @@
 
   .box-card {
     width: 80%;
-    height: 500px;
+    height: 800px;
     margin: 30px auto;
   }
 

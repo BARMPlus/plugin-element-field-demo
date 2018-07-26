@@ -11,23 +11,24 @@ import FieldCheckbox from './components/field-checkbox.vue';
 import FieldRadio from './components/field-radio.vue';
 import FieldSelect from './components/field-select.vue';
 import FieldDatePicker from './components/field-date-picker.vue';
-
+import FieldImg from './components/field-img.vue';
 
 let componentsList = {
-  'FormContainer':FormContainer,
+  'FormContainer': FormContainer,
   'FieldInput': FieldInput,
   'FieldCheckbox': FieldCheckbox,
   'FieldRadio': FieldRadio,
   'FieldSelect': FieldSelect,
-  'FieldDatePicker': FieldDatePicker
+  'FieldDatePicker': FieldDatePicker,
+  'FieldImg': FieldImg
 };
 
 
 export default {
-  install(Vue){
+  install(Vue) {
     Vue.use(ElementUI);
     Object.keys(componentsList).map((name) => {
-      Vue.component(name,componentsList[name]);
+      Vue.component(name, componentsList[name]);
     });
   }
 }
