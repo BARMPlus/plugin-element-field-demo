@@ -10,9 +10,9 @@
 
 <script>
   import FormItem from './form-item.vue';
-  import {initMixin} from '../common/mixin';
+  import {initmixinBosInput} from '../common/mixinBosInput';
   export default {
-    mixins: [initMixin],
+    mixins:[initmixinBosInput],
     components: {
       FormItem
     },

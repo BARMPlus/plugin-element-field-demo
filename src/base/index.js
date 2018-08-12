@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 import FormContainer from './components/form-container.vue';
 import FieldInput from './components/field-input.vue';
+import FieldInputString from './components/field-input-string.vue';
 import FieldCheckbox from './components/field-checkbox.vue';
 import FieldRadio from './components/field-radio.vue';
 import FieldSelect from './components/field-select.vue';
@@ -16,6 +17,7 @@ import FieldImg from './components/field-img.vue';
 let componentsList = {
   'FormContainer': FormContainer,
   'FieldInput': FieldInput,
+  'InputString': FieldInputString,
   'FieldCheckbox': FieldCheckbox,
   'FieldRadio': FieldRadio,
   'FieldSelect': FieldSelect,

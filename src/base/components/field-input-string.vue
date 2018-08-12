@@ -1,20 +1,23 @@
 <template>
-  <form-item :label="label" :prop="prop" :width="width">
-    <el-input :type="type" v-model="copyVal" class=""
+  <el-form-item
+    :label="label" :prop="prop" ref="formitem" :rules="cRules" :required="false">
+
+    <el-input type="text" v-model="copyVal" class=""
               :rows="cRows" :placeholder="placeholder"
               :readonly="cReadonly" :disabled="cDisabled"
               :autofocus="cAutofocus" :resize="resize"
               @change="change" @blur="blur" @focus="focus"
     ></el-input>
-  </form-item>
+
+  </el-form-item>
 </template>
 
 <script>
-  import FormItem from './form-item.vue';
   import {initmixinBosInput} from '../common/mixinBosInput';
+
+
   export default {
     mixins:[initmixinBosInput],
-    components:{FormItem},
     props: {
       resize: {
         type: String,
@@ -32,10 +35,6 @@
         type: [Boolean, String],
         default: false
       },
-      disabled: {
-        type: [Boolean, String],
-        default: false
-      },
       rows: {
         type: [Number, String],
         default: 2
@@ -46,19 +45,27 @@
       }
     },
     computed: {
-      cRows(){
+      cRows() {
         return this.transformNumber(this.rows)
       },
-      cAutofocus(){
+      cAutofocus() {
         return this.transformBoolean(this.autofocus);
       },
-      cDisabled(){
+      cDisabled() {
         return this.transformBoolean(this.disabled);
       },
-      cReadonly(){
-        return this.transformBoolean(this.readonly,true);
+      cReadonly() {
+        return this.transformBoolean(this.readonly, true);
+      },
+      cType() {
+        return this.type;
       }
-    }
+    },
+    methods: {
+
+    },
+
+
   }
 </script>
 

@@ -22,11 +22,11 @@
 
 <script>
   import FormItem from './form-item.vue';
-  import {initMixin} from '../common/mixin';
+  import {initmixinBosInput} from '../common/mixinBosInput';
   import axios from 'axios'
 
   export default {
-    mixins: [initMixin],
+    mixins:[initmixinBosInput],
     components: {FormItem},
     props: {
       max: {
