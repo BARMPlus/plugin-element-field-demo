@@ -100,10 +100,10 @@
         console.log(data)
       },
       submit() {
-        this.$refs.form.validate(function () {
-          alert('success');
-        }, function () {
-          alert('fail');
+        this.$refs.form.validate.then(function(){
+            console.log('success')
+        }).catch(function(){
+            console.log('fail')
         });
       }
     }
