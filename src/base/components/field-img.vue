@@ -113,13 +113,3 @@
     },
   }
 </script>
-<style lang="scss" rel="stylesheet/scss">
-  /*.el-upload--picture-card{*/
-  /*width: 50%;*/
-  /*}*/
-  /*.el-upload-list--picture-card .el-upload-list__item{*/
-  /*width: 50%;*/
-  /*}*/
-
-</style>
-
