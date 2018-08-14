@@ -4,6 +4,7 @@
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+import {formRulesMixin,extendRules} from './common/mixinComponent';
 
 import FormContainer from './components/form-container.vue';
 import FieldInput from './components/field-input.vue';
@@ -12,6 +13,8 @@ import FieldRadio from './components/field-radio.vue';
 import FieldSelect from './components/field-select.vue';
 import FieldDatePicker from './components/field-date-picker.vue';
 import FieldImg from './components/field-img.vue';
+
+
 
 let componentsList = {
   'FormContainer': FormContainer,
@@ -27,10 +30,13 @@ let componentsList = {
 export default {
   install(Vue) {
     Vue.use(ElementUI);
+    Vue.mixin(formRulesMixin);
     Object.keys(componentsList).map((name) => {
       Vue.component(name, componentsList[name]);
     });
-  }
+  },
+  mixin:formRulesMixin,
+  extend:extendRules
 }
 
 

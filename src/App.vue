@@ -5,12 +5,12 @@
       <span @click="readonlyClick">切换</span>
       <form-container ref="form" :model="form" :_readonly="readonly">
         <field-input v-model="form.desc" prop="desc"
-                     :rules="r(true).all(R.telchecker)" label="自我描述"
+                     :rules="r(true).all(R.mobile)" label="自我描述"
         ></field-input>
         <br/>
         <field-input label="密码" v-model="form.password1"></field-input>
-        <field-input label="密码" v-model="form.password2" prop="password2" type="password"
-                     :rules="r(true).change('定制提示哦',R.passchecker)"></field-input>
+        <field-input label="密码" v-model="form.password2" prop="password2"
+                     :rules="r(true).change('定制提示哦',rules.pass,R.cs)"></field-input>
         <br/>
         <field-checkbox label="选择" v-model="form.checkbox"
                         :list="arr" width="5" min="0" max="2"
@@ -36,15 +36,16 @@
 </template>
 
 <script>
-  import {initMixin} from './base/common/mixinComponent';
+
+  import rules from 'common/js/validate';
 
 
   export default {
-    mixins: [initMixin],
+
     name: 'App',
     data() {
       return {
-        desc: "aadsf",
+         rules,
 
         //文件格式{name,URL}
         fileList: [
@@ -57,16 +58,7 @@
         sts: 'http://115.159.154.194:8080/sts',
         readonly: false,
         form: {
-          address: [
-            {zipcode: '332500', name: '江西湖口'},
-            {zipcode: '361005', name: '深圳蛇口'},
-            {zipcode: '325035', name: '温州茶山'}
-          ],
-          checkbox: [],
-          name: '',
-          desc: '',
-          info: 123456,
-          time: ''
+          checkbox: []
         }
         ,
         options: [
@@ -87,8 +79,6 @@
         arr: [{key: '选项1', val: 't1'}, {key: '选项2', val: 't2'}, {key: '选项3', val: 't3'}],
       }
     },
-
-
     methods: {
       readonlyClick() {
         this.readonly = !this.readonly;
@@ -100,13 +90,17 @@
         console.log(data)
       },
       submit() {
-        this.$refs.form.validate.then(function(){
+      /*  this.$refs.form.validate.then(function(){
             console.log('success')
         }).catch(function(){
             console.log('fail')
-        });
+        });*/
+
+      this.$refs.form.gql()
+
       }
     }
+
   }
 </script>
 
