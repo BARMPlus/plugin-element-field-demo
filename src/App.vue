@@ -58,7 +58,11 @@
         sts: 'http://115.159.154.194:8080/sts',
         readonly: false,
         form: {
-          checkbox: []
+          checkbox: [],
+          desc:'17757724999',
+          password1:'123456',
+          password2:'123456'
+
         }
         ,
         options: [
@@ -90,12 +94,12 @@
         console.log(data)
       },
       submit() {
-      /*  this.$refs.form.validate.then(function(){
+     /*   this.$refs.form.validate.then(function(){
             console.log('success')
         }).catch(function(){
             console.log('fail')
-        });*/
-
+        });
+*/
       this.$refs.form.gql()
 
       }

@@ -1,23 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function outPutInfo(flag) {
   return flag ? true : "%s格式不正确";
 }
@@ -99,5 +80,11 @@ export let formRulesMixin = {
       };
       return ruler.r(required);
     },
-  }
+    mutate(mutation, variables) {
+      return this.$apollo.mutate({
+        mutation: mutation,
+        variables: variables,
+      });
+    }
+  },
 };
