@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="model" :rules="rules" :show-message="showMessage" >
+  <el-form ref="form" :model="model" :rules="rules" :show-message="showMessage" >
     <slot></slot>
   </el-form>
 </template>
@@ -12,6 +12,18 @@
           return !this._readonly
       }
     },
+    methods:{
+      validate(sCallback,eCallback){
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            sCallback&&sCallback.call(this)
+          } else {
+            eCallback&&eCallback.call(this);
+            return false;
+          }
+        });
+      }
+    },
     props: {
       _readonly:{
         type:Boolean,
@@ -21,10 +33,8 @@
         type: Object,
         default: {}
       },
-      rules: {
-        type: Object,
-        default: {}
-      }
+      rules:null
+
     }
   }
 </script>

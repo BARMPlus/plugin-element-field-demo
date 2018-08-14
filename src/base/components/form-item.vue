@@ -1,6 +1,6 @@
 <template>
   <el-form-item :class="['_form-item',inputBorderClass]"
-                :label="label" :prop="prop"
+                :label="label" :prop="prop" :rules="rules"
                 :style="boxWidth" :label-width="labelWidth"
   >
     <slot></slot>
@@ -17,6 +17,9 @@
       }
     },
     props: {
+      rules:{
+        default:null
+      },
       prop: {
         type: String,
         default: '',

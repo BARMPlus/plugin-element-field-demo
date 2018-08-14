@@ -1,6 +1,6 @@
 <template>
-  <form-item :label="label" :prop="prop" :width="width">
-    <el-input :type="type" v-model="copyVal" class=""
+  <form-item :label="label" :prop="prop" :width="width" :rules="cRules">
+    <el-input :type="type" v-model="copyVal"
               :rows="cRows" :placeholder="placeholder"
               :readonly="cReadonly" :disabled="cDisabled"
               :autofocus="cAutofocus" :resize="resize"
@@ -16,6 +16,9 @@
     mixins:[initmixinBosInput],
     components:{FormItem},
     props: {
+      rules:{
+        default:null
+      },
       resize: {
         type: String,
         default: ''
