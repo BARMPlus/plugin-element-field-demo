@@ -3,7 +3,7 @@
  */
 let rules={
   pass: function (value) {
-    return this.form.password1 && (this.form.password1 === value) ? true : "请再次输入一致的密码";
+    return this.form.password1 && (this.form.password1 === value) ? true : "请输入一致的密码(自定义规则)";
   }
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <form-item :label="label" :prop="prop" :width="width">
+  <form-item :label="label" :prop="prop" width="10">
     <el-upload
       action="string"
       list-type="picture-card"
@@ -14,16 +14,17 @@
       <i class="el-icon-plus"></i>
     </el-upload>
 
-    <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt="">
+    <el-dialog :visible.sync="dialog.showFlag">
+      <img width="100%" :src="dialog.imageUrl" />
     </el-dialog>
   </form-item>
 </template>
 
 <script>
+  import axios from 'axios'
   import FormItem from './form-item.vue';
   import {initmixinBosInput} from '../common/mixinBosInput';
-  import axios from 'axios'
+  import {uploadVariables} from '../common/upload';
 
   export default {
     mixins:[initmixinBosInput],
@@ -31,14 +32,11 @@
     props: {
       max: {
         type: Number,
-        default: 0,
+        default: 5,
       },
       fileList: {
         type: Array,
 
-      },
-      sts: {
-        type: String,
       },
       disabled: {
         type: [Boolean, String],
@@ -49,67 +47,78 @@
       cDisabled() {
         return this.transformBoolean(this.disabled, true);
       },
+      strFileList(){
+          let arrList=this.fileList.map((item)=>{
+              return item.name;
+          });
+        return arrList.join(',');
+      }
     },
     data() {
       return {
-        dialogVisible: false,
-        dialogImageUrl: '',
-        imgUrl: 'http://mlshopimage.oss-cn-shanghai.aliyuncs.com/',
-        imgList: [],
+        dialog:{
+            showFlag:false,
+            imageUrl:''
+        },
+        sts:uploadVariables.sts,
+        imgPrefixUrl: uploadVariables.prefix
       }
     },
     methods: {
       handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
+        this.dialog.imageUrl = file.url;
+        this.dialog.showFlag = true;
       },
-      handleRemove(file, fileList) {
-        console.log(file);
-        this.fileList.forEach((value, index) => {
-          if (value.name == file.name) {
+      handleRemove(file) {
+        this.fileList.some((value, index) => {
+          if (value.name === file.name) {
             this.fileList.splice(index, 1);
+            return true;
           }
         });
-        this.$emit('imgList', this.fileList);
+        this.$emit('imgList', this.strFileList);
       },
       beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isJPG) {
-          this.$message.error('上传图片只能是 JPG 格式!');
-        }
         if (!isLt2M) {
           this.$message.error('上传图片大小不能超过 2MB!');
         }
-        return isJPG && isLt2M;
+        return isLt2M;
       },
       handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 ${this.max} 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
       uploadSectionFile(e) {
         let files = e.file;
+        if(!this.sts)throw new Error('Please use ElementField.upload set STS')
         axios.get(this.sts).then((result) => {
+          let data=result.data,
+              credentials=data.assumeRoleResponse.credentials;
+
           const client = new OSS({
-            endpoint: 'http://oss-cn-shanghai.aliyuncs.com/',
-            bucket: 'mlshopimage',
-            accessKeyId: result.data.credentials.accessKeyId,
-            accessKeySecret: result.data.credentials.accessKeySecret,
-            stsToken: result.data.credentials.securityToken,
+            endpoint: data.endpoint,
+            bucket:   data.bucketName,
+            accessKeyId: credentials.accessKeyId,
+            accessKeySecret:credentials.accessKeySecret,
+            stsToken: credentials.securityToken,
           });
-          const storeAs = result.data.requestId;
+
+          const storeAs = data.resourceId;
           client.multipartUpload(storeAs, files).then((results) => {
             if (results.name) {
-              let img = `${this.imgUrl}${results.name}`;
+              let img = `${this.imgPrefixUrl}${results.name}`;
               this.fileList.push({name: results.name, url: img});
-              this.$emit('imgList', this.fileList);
+              this.$emit('imgList', this.strFileList);
             }
           }).catch((err) => {
-            console.log(err);
+            console.error(err);
           });
         }).catch((err) => {
-          console.log(err);
+          console.error(err);
         });
       }
     },
   }
 </script>
+
+

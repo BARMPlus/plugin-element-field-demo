@@ -1,21 +1,30 @@
-# element-ui-cs
 
-> A Vue.js project
+封装element-ui 后台管理系统组件
+===
 
-## Build Setup
+### 简述
 
-``` bash
-# install dependencies
-npm install
+###### 1.此组件为方便个人开发而制作
+###### 2.与element-ui结合,富文本使用vue-quill-editor插件
+###### 3.使用ajax请求插件axios
+###### 4.目前提供组件：input,radio,checkbox,select,date-picker,image,rich-text
 
-# serve with hot reload at localhost:8080
-npm run dev
 
-# build for production with minification
-npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
+
+### npm安装
+
+```
+npm install element-ui  --save
+npm install axios --save
+npm install vue-quill-editor --save
+npm install element-field --save
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+### 引入
+```
+import ElementField from 'element-field';
+Vue.use(ElementField);
+```
+

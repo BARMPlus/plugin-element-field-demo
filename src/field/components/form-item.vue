@@ -13,7 +13,7 @@
   export default {
     data(){
       return {
-        labelWidth: '90px'
+        labelWidth: '120px'
       }
     },
     props: {
