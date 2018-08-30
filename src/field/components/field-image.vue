@@ -4,7 +4,7 @@
       action="string"
       list-type="picture-card"
       :limit="max"
-      :file-list="fileList"
+      :file-list="cFileList"
       :disabled="cDisabled"
       :http-request="uploadSectionFile"
       :on-preview="handlePictureCardPreview"
@@ -15,7 +15,7 @@
     </el-upload>
 
     <el-dialog :visible.sync="dialog.showFlag">
-      <img width="100%" :src="dialog.imageUrl" />
+      <img width="100%" :src="dialog.imageUrl"/>
     </el-dialog>
   </form-item>
 </template>
@@ -27,40 +27,41 @@
   import {uploadVariables} from '../common/upload';
 
   export default {
-    mixins:[initmixinBosInput],
+    mixins: [initmixinBosInput],
     components: {FormItem},
     props: {
       max: {
         type: Number,
         default: 5,
       },
-      fileList: {
-        type: Array,
-
-      },
       disabled: {
         type: [Boolean, String],
         default: false
       },
     },
+
     computed: {
+      cFileList(){
+
+          if(!this.copyVal)return [];
+            let fileArr=this.copyVal.split(/,|，/),
+                arr=[];
+            fileArr.map((item)=>{
+                arr.push({name:item, url:uploadVariables.prefix+item})
+            });
+        return arr;
+      },
       cDisabled() {
         return this.transformBoolean(this.disabled, true);
-      },
-      strFileList(){
-          let arrList=this.fileList.map((item)=>{
-              return item.name;
-          });
-        return arrList.join(',');
       }
     },
     data() {
       return {
-        dialog:{
-            showFlag:false,
-            imageUrl:''
+        dialog: {
+          showFlag: false,
+          imageUrl: ''
         },
-        sts:uploadVariables.sts,
+        sts: uploadVariables.sts,
         imgPrefixUrl: uploadVariables.prefix
       }
     },
@@ -70,13 +71,10 @@
         this.dialog.showFlag = true;
       },
       handleRemove(file) {
-        this.fileList.some((value, index) => {
-          if (value.name === file.name) {
-            this.fileList.splice(index, 1);
-            return true;
-          }
-        });
-        this.$emit('imgList', this.strFileList);
+          let arr=this.copyVal.split(/,|，/),
+              index=arr.indexOf(file.name);
+          arr.splice(index,1);
+        this.copyVal=arr.join(',');
       },
       beforeAvatarUpload(file) {
         const isLt2M = file.size / 1024 / 1024 < 2;
@@ -90,25 +88,24 @@
       },
       uploadSectionFile(e) {
         let files = e.file;
-        if(!this.sts)throw new Error('Please use ElementField.upload set STS')
+        if (!this.sts)throw new Error('Please use ElementField.upload set STS');
         axios.get(this.sts).then((result) => {
-          let data=result.data,
-              credentials=data.assumeRoleResponse.credentials;
+          let data = result.data,
+            credentials = data.assumeRoleResponse.credentials;
 
           const client = new OSS({
             endpoint: data.endpoint,
-            bucket:   data.bucketName,
+            bucket: data.bucketName,
             accessKeyId: credentials.accessKeyId,
-            accessKeySecret:credentials.accessKeySecret,
+            accessKeySecret: credentials.accessKeySecret,
             stsToken: credentials.securityToken,
           });
 
           const storeAs = data.resourceId;
           client.multipartUpload(storeAs, files).then((results) => {
             if (results.name) {
-              let img = `${this.imgPrefixUrl}${results.name}`;
-              this.fileList.push({name: results.name, url: img});
-              this.$emit('imgList', this.strFileList);
+              this.copyVal+=`,${results.name}`;
+
             }
           }).catch((err) => {
             console.error(err);
